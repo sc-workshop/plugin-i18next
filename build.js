@@ -15,7 +15,7 @@ const ctx = await context({
 	bundle: true,
 	// esm to work in the browser
 	format: "esm",
-	platform: "neutral",
+	platform: "browser",
 	// sourcemaps are unused at the moment
 	sourcemap: false,
 });

@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
+/** biome-ignore-all lint/style/noNonNullAssertion: <explanation> */
 
-import { inspect } from "node:util";
 import type {
 	Bundle,
 	BundleImport,
@@ -112,17 +112,6 @@ function parseFile(args: {
 			settings: args.settings,
 		});
 
-		// console.log("I18NEXT MESSAGE!!!");
-		// console.log(
-		// 	inspect(
-		// 		{
-		// 			bundle: parsed.bundle,
-		// 			message: parsed.message,
-		// 			variants: parsed.variants,
-		// 		},
-		// 		{ depth: null },
-		// 	),
-		// );
 		bundles.push(parsed.bundle);
 		messages.push(parsed.message);
 		variants.push(...parsed.variants);

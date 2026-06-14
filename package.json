@@ -1,0 +1,41 @@
+{
+	"name": "@sc-workshop/plugin-i18next",
+	"version": "6.2.1",
+	"private": true,
+	"type": "module",
+	"types": "./build/index.d.ts",
+	"exports": {
+		".": "./build/index.js"
+	},
+	"files": [
+		"./build"
+	],
+	"publishConfig": {
+		"access": "public"
+	},
+	"author": "inlang contributors & DaniilSV",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/opral/inlang",
+		"directory": "packages/plugins/i18next"
+	},
+	"scripts": {
+		"start:dev": "node ./build.js",
+		"build": "pnpx cross-env NODE_ENV=production node ./build.js",
+		"prepack": "pnpm run build",
+		"clean": "rm -rf ./build ./node_modules"
+	},
+	"dependencies": {
+		"@inlang/sdk": "2.9.3",
+		"@sinclair/typebox": "0.31.28"
+	},
+	"devDependencies": {
+		"@types/flat": "^5.0.2",
+		"@types/lodash.merge": "^4.6.7",
+		"@types/parsimmon": "1.10.6",
+		"esbuild": "^0.24.2",
+		"flat": "^6.0.1",
+		"parsimmon": "^1.18.1",
+		"typescript": "^5.5.2"
+	}
+}

@@ -1,0 +1,12 @@
+{
+	"extends": "./tsconfig.default.json",
+	"include": [
+		"src/**/*"
+	],
+	"compilerOptions": {
+		"types": [
+			"node"
+		],
+		"resolveJsonModule": true
+	}
+}

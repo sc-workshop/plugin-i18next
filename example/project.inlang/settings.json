@@ -1,0 +1,13 @@
+{
+  "baseLocale": "en",
+  "locales": [
+    "en",
+    "de"
+  ],
+  "modules": [
+    "../dist/index.js"
+  ],
+  "plugin.neko.i18next": {
+    "pathPattern": "./translations/{locale}.json"
+  }
+}

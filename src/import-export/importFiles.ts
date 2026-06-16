@@ -52,6 +52,21 @@ export const importFiles: NonNullable<(typeof plugin)["importFiles"]> = async ({
 	return { bundles: uniqueBundles, messages, variants };
 };
 
+/**
+ * Transforms all top level (object local) arrays to line breaks
+ * @param table 
+ */
+function preprocessTable(table: any) {
+	for (const [key, value] of Object.entries(table)) {
+		if (Array.isArray(value)) {
+			table[key] = value.join("\n");
+		} else if (typeof value === "object" && value !== undefined && value !== null) {
+			table[key] = preprocessTable(value);
+		}
+	}
+	return table;
+}
+
 function parseFile(args: {
 	namespace?: string;
 	locale: string;
@@ -63,7 +78,7 @@ function parseFile(args: {
 	variants: VariantImport[];
 } {
 	const table = JSON.parse(new TextDecoder().decode(args.content));
-	const resource: Record<string, string> = flatten(table);
+	const resource: Record<string, string> = flatten(preprocessTable(table));
 
 	const bundles: BundleImport[] = [];
 	const messages: MessageImport[] = [];
@@ -218,17 +233,17 @@ function parseMessage(args: {
 		matches.push(
 			hasContext
 				? {
-						type: "literal-match",
-						// i18next always uses "context" as the key
-						// "friend_male" -> ["friend", "male"]
-						key: "context",
-						value: keyParts[1]!,
-					}
+					type: "literal-match",
+					// i18next always uses "context" as the key
+					// "friend_male" -> ["friend", "male"]
+					key: "context",
+					value: keyParts[1]!,
+				}
 				: // the base key is the fallback for all context variants
-					{
-						type: "catchall-match",
-						key: "context",
-					},
+				{
+					type: "catchall-match",
+					key: "context",
+				},
 		);
 	}
 
@@ -245,14 +260,14 @@ function parseMessage(args: {
 		matches.push(
 			isZero
 				? {
-						type: "literal-match",
-						key: "count",
-						value: "0",
-					}
+					type: "literal-match",
+					key: "count",
+					value: "0",
+				}
 				: {
-						type: "catchall-match",
-						key: "count",
-					},
+					type: "catchall-match",
+					key: "count",
+				},
 		);
 	}
 
@@ -289,16 +304,16 @@ function parseMessage(args: {
 		matches.push(
 			isOrdinal
 				? {
-						type: "literal-match",
-						key: "countOrdinal",
-						value: keyParts.at(-1)!,
-					}
+					type: "literal-match",
+					key: "countOrdinal",
+					value: keyParts.at(-1)!,
+				}
 				: // cardinal/zero/base variants are the fallback for ordinal
-					// lookups of the same key
-					{
-						type: "catchall-match",
-						key: "countOrdinal",
-					},
+				// lookups of the same key
+				{
+					type: "catchall-match",
+					key: "countOrdinal",
+				},
 		);
 	}
 
@@ -335,15 +350,15 @@ function parseMessage(args: {
 			// the exact `count = 0` variant matches any plural category
 			hasPlurals && !isZero
 				? {
-						type: "literal-match",
-						key: "countPlural",
-						value: keyParts.at(-1)!,
-					}
+					type: "literal-match",
+					key: "countPlural",
+					value: keyParts.at(-1)!,
+				}
 				: // the base key is the fallback for all plural variants
-					{
-						type: "catchall-match",
-						key: "countPlural",
-					},
+				{
+					type: "catchall-match",
+					key: "countPlural",
+				},
 		);
 	}
 
@@ -504,9 +519,9 @@ function parseMarkupTagAt(
 	startIndex: number,
 ):
 	| {
-			part: Pattern[number];
-			endIndex: number;
-	  }
+		part: Pattern[number];
+		endIndex: number;
+	}
 	| undefined {
 	const rest = value.slice(startIndex);
 
